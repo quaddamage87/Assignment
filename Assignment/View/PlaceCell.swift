@@ -10,13 +10,13 @@ import UIKit
 
 class PlaceCell: UITableViewCell {
     
-    @IBOutlet weak var placeNameLabel: UILabel!
     
+    @IBOutlet weak var placeNameLabel: UILabel!
     @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var ratingView: RatingView!
-    @IBOutlet weak var reviewCountLabel: UILabel!
-    @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var openClosedLabel: UILabel!
+    @IBOutlet weak var reviewCountLabel: UILabel!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

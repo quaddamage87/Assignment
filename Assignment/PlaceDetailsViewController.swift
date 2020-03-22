@@ -52,7 +52,7 @@ class PlaceDetailsViewController: UIViewController, UITableViewDelegate, UITable
         }
         
         // Feth the place details
-        let placesRequest = PlacesAPIRequest()
+        let placesRequest = PlacesAPIClient()
         
         if let place = place {
             placesRequest.getPlaceDetails(placeID: place.placeID, completion: { [weak self] result in
@@ -75,7 +75,7 @@ class PlaceDetailsViewController: UIViewController, UITableViewDelegate, UITable
         // load photos
         if let photos = details?.photos {
             if photos.count > 0 {
-                let placesRequest = PlacesAPIRequest()
+                let placesRequest = PlacesAPIClient()
                 var imageUrl = placesRequest.getPlacePhotoURL(photoReference: photos[0].photoReference)
                 leftImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder.png"))
                 if photos.count > 1 {

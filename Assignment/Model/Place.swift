@@ -10,11 +10,13 @@ import Foundation
 
 struct PlacesApiResponse: Codable {
     var htmlAttributions: [String]
+    var nextPageToken: String
     var results: [Place]
     var status: String
 
     enum CodingKeys: String, CodingKey {
         case htmlAttributions = "html_attributions"
+        case nextPageToken = "next_page_token"
         case results, status
     }
 }
@@ -27,7 +29,7 @@ struct Place: Codable {
     var openingHours: OpeningHours?
     var photos: [Photo]?
     var placeID: String
-    var plusCode: PlusCode
+    var plusCode: PlusCode?
     var rating: Double?
     var reference, scope: String
     var types: [String]

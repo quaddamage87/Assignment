@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1039C6332426CCE500DB71D0 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1039C6322426CCE500DB71D0 /* APIClient.swift */; };
+		1039C6362427036600DB71D0 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1039C6352427036600DB71D0 /* Reachability.swift */; };
 		105B28912422690E007FDFA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105B28902422690E007FDFA5 /* AppDelegate.swift */; };
 		105B28982422690E007FDFA5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 105B28962422690E007FDFA5 /* Main.storyboard */; };
 		105B289A2422690E007FDFA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 105B28992422690E007FDFA5 /* Assets.xcassets */; };
@@ -14,14 +16,15 @@
 		105B28A82422690F007FDFA5 /* AssignmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105B28A72422690F007FDFA5 /* AssignmentTests.swift */; };
 		105B28B32422690F007FDFA5 /* AssignmentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105B28B22422690F007FDFA5 /* AssignmentUITests.swift */; };
 		105B28C12422A08B007FDFA5 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105B28C02422A08B007FDFA5 /* RatingView.swift */; };
-		105B28C324238BFA007FDFA5 /* PlacesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105B28C224238BFA007FDFA5 /* PlacesTableViewController.swift */; };
 		105B28C524238F45007FDFA5 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105B28C424238F45007FDFA5 /* Place.swift */; };
 		105B28CC24239925007FDFA5 /* PlaceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105B28CB24239925007FDFA5 /* PlaceDetailsViewController.swift */; };
-		105B28CE2423B0E3007FDFA5 /* PlacesAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105B28CD2423B0E3007FDFA5 /* PlacesAPIRequest.swift */; };
+		105B28CE2423B0E3007FDFA5 /* PlacesAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105B28CD2423B0E3007FDFA5 /* PlacesAPIClient.swift */; };
 		105B28D12423D43D007FDFA5 /* PlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105B28D02423D43D007FDFA5 /* PlaceCell.swift */; };
 		105B28D32424365B007FDFA5 /* PlaceDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105B28D22424365B007FDFA5 /* PlaceDetails.swift */; };
 		105B28D8242487DA007FDFA5 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 105B28D7242487DA007FDFA5 /* SDWebImage */; };
 		105B28DA2424B267007FDFA5 /* ReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105B28D92424B267007FDFA5 /* ReviewCell.swift */; };
+		105B28DC24250A29007FDFA5 /* PlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105B28DB24250A29007FDFA5 /* PlacesViewController.swift */; };
+		105B28DE24269EE8007FDFA5 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105B28DD24269EE8007FDFA5 /* UIViewController+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +45,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1039C6322426CCE500DB71D0 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		1039C6352427036600DB71D0 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		105B288D2422690E007FDFA5 /* Assignment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Assignment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		105B28902422690E007FDFA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		105B28972422690E007FDFA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -55,13 +60,14 @@
 		105B28B22422690F007FDFA5 /* AssignmentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentUITests.swift; sourceTree = "<group>"; };
 		105B28B42422690F007FDFA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		105B28C02422A08B007FDFA5 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
-		105B28C224238BFA007FDFA5 /* PlacesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesTableViewController.swift; sourceTree = "<group>"; };
 		105B28C424238F45007FDFA5 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		105B28CB24239925007FDFA5 /* PlaceDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailsViewController.swift; sourceTree = "<group>"; };
-		105B28CD2423B0E3007FDFA5 /* PlacesAPIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesAPIRequest.swift; sourceTree = "<group>"; };
+		105B28CD2423B0E3007FDFA5 /* PlacesAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesAPIClient.swift; sourceTree = "<group>"; };
 		105B28D02423D43D007FDFA5 /* PlaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCell.swift; sourceTree = "<group>"; };
 		105B28D22424365B007FDFA5 /* PlaceDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetails.swift; sourceTree = "<group>"; };
 		105B28D92424B267007FDFA5 /* ReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCell.swift; sourceTree = "<group>"; };
+		105B28DB24250A29007FDFA5 /* PlacesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesViewController.swift; sourceTree = "<group>"; };
+		105B28DD24269EE8007FDFA5 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +96,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1039C6342427034F00DB71D0 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				1039C6352427036600DB71D0 /* Reachability.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		105B28842422690E007FDFA5 = {
 			isa = PBXGroup;
 			children = (
@@ -113,16 +127,18 @@
 		105B288F2422690E007FDFA5 /* Assignment */ = {
 			isa = PBXGroup;
 			children = (
+				1039C6342427034F00DB71D0 /* Util */,
 				105B28CF2423B0ED007FDFA5 /* Api */,
 				105B28C624238F55007FDFA5 /* Model */,
 				105B28C824238F77007FDFA5 /* View */,
 				105B28902422690E007FDFA5 /* AppDelegate.swift */,
-				105B28C224238BFA007FDFA5 /* PlacesTableViewController.swift */,
 				105B28CB24239925007FDFA5 /* PlaceDetailsViewController.swift */,
+				105B28DB24250A29007FDFA5 /* PlacesViewController.swift */,
 				105B28962422690E007FDFA5 /* Main.storyboard */,
 				105B28992422690E007FDFA5 /* Assets.xcassets */,
 				105B289B2422690E007FDFA5 /* LaunchScreen.storyboard */,
 				105B289E2422690E007FDFA5 /* Info.plist */,
+				105B28DD24269EE8007FDFA5 /* UIViewController+Extension.swift */,
 			);
 			path = Assignment;
 			sourceTree = "<group>";
@@ -167,7 +183,8 @@
 		105B28CF2423B0ED007FDFA5 /* Api */ = {
 			isa = PBXGroup;
 			children = (
-				105B28CD2423B0E3007FDFA5 /* PlacesAPIRequest.swift */,
+				1039C6322426CCE500DB71D0 /* APIClient.swift */,
+				105B28CD2423B0E3007FDFA5 /* PlacesAPIClient.swift */,
 			);
 			path = Api;
 			sourceTree = "<group>";
@@ -309,15 +326,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				105B28CE2423B0E3007FDFA5 /* PlacesAPIRequest.swift in Sources */,
+				105B28CE2423B0E3007FDFA5 /* PlacesAPIClient.swift in Sources */,
 				105B28DA2424B267007FDFA5 /* ReviewCell.swift in Sources */,
+				105B28DC24250A29007FDFA5 /* PlacesViewController.swift in Sources */,
 				105B28CC24239925007FDFA5 /* PlaceDetailsViewController.swift in Sources */,
 				105B28C12422A08B007FDFA5 /* RatingView.swift in Sources */,
 				105B28D32424365B007FDFA5 /* PlaceDetails.swift in Sources */,
 				105B28912422690E007FDFA5 /* AppDelegate.swift in Sources */,
-				105B28C324238BFA007FDFA5 /* PlacesTableViewController.swift in Sources */,
 				105B28C524238F45007FDFA5 /* Place.swift in Sources */,
 				105B28D12423D43D007FDFA5 /* PlaceCell.swift in Sources */,
+				105B28DE24269EE8007FDFA5 /* UIViewController+Extension.swift in Sources */,
+				1039C6332426CCE500DB71D0 /* APIClient.swift in Sources */,
+				1039C6362427036600DB71D0 /* Reachability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
