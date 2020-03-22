@@ -58,7 +58,9 @@ class PlaceDetailsViewController: UIViewController, UITableViewDelegate, UITable
             placesRequest.getPlaceDetails(placeID: place.placeID, completion: { [weak self] result in
                     switch result {
                         case .failure(let error):
-                            print(error)
+                            DispatchQueue.main.async {
+                                self?.showAlert(with: "API error: \(error.localizedDescription)")
+                            }
                         case .success(let details):
                             self?.details = details
                             self?.listOfReviews = details.reviews

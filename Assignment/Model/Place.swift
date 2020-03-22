@@ -24,17 +24,17 @@ struct PlacesApiResponse: Codable {
 // MARK: - Result
 struct Place: Codable {
     var geometry: Geometry
-    var icon: String
+    var icon: String?
     var id, name: String
     var openingHours: OpeningHours?
     var photos: [Photo]?
     var placeID: String
     var plusCode: PlusCode?
     var rating: Double?
-    var reference, scope: String
-    var types: [String]
+    var reference, scope: String?
+    var types: [String]?
     var userRatingsTotal: Int?
-    var vicinity: String
+    var vicinity: String?
     var distance: Int?
 
     enum CodingKeys: String, CodingKey {

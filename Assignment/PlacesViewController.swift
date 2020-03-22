@@ -152,11 +152,11 @@ class PlacesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if let openNow = place.openingHours?.openNow {
             if openNow {
                 cell.openClosedLabel?.isHidden = false
-                cell.openClosedLabel?.textColor = UIColor.green
+                cell.openClosedLabel?.textColor = UIColor.systemGreen
                 cell.openClosedLabel?.text = "Open"
             } else {
                 cell.openClosedLabel?.isHidden = false
-                cell.openClosedLabel?.textColor = UIColor.red
+                cell.openClosedLabel?.textColor = UIColor.systemRed
                 cell.openClosedLabel?.text = "Closed"
             }
         }

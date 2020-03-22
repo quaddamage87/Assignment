@@ -22,15 +22,15 @@ struct PlaceDetailsApiResponse: Codable {
 
 // MARK: - Result
 struct PlaceDetails: Codable {
-    var addressComponents: [AddressComponent]
+    var addressComponents: [AddressComponent]?
     var adrAddress, formattedAddress, formattedPhoneNumber: String?
     var geometry: Geometry?
     var icon: String?
     var id: String?
-    var internationalPhoneNumber: String
+    var internationalPhoneNumber: String?
     var name: String?
     var openingHours: OpeningHoursDetail?
-    var photos: [PhotoDetail]
+    var photos: [PhotoDetail]?
     var placeID: String?
     var plusCode: PlusCode?
     var rating: Double?
@@ -122,7 +122,7 @@ struct PhotoDetail: Codable {
 struct Review: Codable {
     var authorName: String
     var authorURL: String
-    var language: String
+    var language: String?
     var profilePhotoURL: String
     var rating: Int
     var relativeTimeDescription, text: String
