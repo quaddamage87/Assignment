@@ -35,6 +35,7 @@ struct Place: Codable {
     var types: [String]
     var userRatingsTotal: Int?
     var vicinity: String
+    var distance: Int?
 
     enum CodingKeys: String, CodingKey {
         case geometry, icon, id, name
@@ -45,7 +46,47 @@ struct Place: Codable {
         case rating, reference, scope, types
         case userRatingsTotal = "user_ratings_total"
         case vicinity
+        case distance
     }
+}
+
+extension Place {
+    static func rating (lhs: Place, rhs: Place) -> Bool {
+        lhs.rating ?? 0 > rhs.rating ?? 0
+    }
+    
+    static func name (lhs: Place, rhs: Place) -> Bool {
+        lhs.name < rhs.name
+    }
+    
+    static func openNow (lhs: Place, rhs: Place) -> Bool {
+        var result = false
+        if let openingHoursA = lhs.openingHours {
+            if let openingHoursB = rhs.openingHours {
+                result = (openingHoursA.openNow ? 1 : 0) > (openingHoursB.openNow ? 1 : 0)
+            } else {
+                result = true // open/closed take precedence over unknown
+            }
+        } else if let openingHoursB = rhs.openingHours {
+            if !openingHoursB.openNow {
+                result = true // put A(unknown opening hours) in front of B
+            } else {
+                result = false
+            }
+        }
+        return result
+    }
+    
+    static func distance (lhs: Place, rhs: Place) -> Bool {
+        lhs.distance ?? 0 < rhs.distance ?? 0
+    }
+    
+//    func sortByRating(a: Place, b: Place) -> Bool {
+//        a.rating ?? 0 < b.rating ?? 0
+//    }
+//    func sortByName(a: Place, b: Place) -> Bool {
+//        a.rating ?? 0 < b.rating ?? 0
+//    }
 }
 
 // MARK: - Geometry

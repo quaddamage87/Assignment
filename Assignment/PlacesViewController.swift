@@ -9,6 +9,23 @@
 import UIKit
 import CoreLocation
 
+fileprivate enum PlacesSortingSegments : Int {
+    case rating = 0
+    case name = 1
+    case openNow = 2
+    case distance = 3
+    
+    init?(rawValue: Int) {
+        switch rawValue {
+        case 0: self = .rating
+        case 1: self = .name
+        case 2: self = .openNow
+        case 3: self = .distance
+        default: return nil
+        }
+    }
+}
+
 class PlacesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
 
     let locationManager = CLLocationManager()
@@ -16,8 +33,9 @@ class PlacesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var searchRadius = 1000 // default search radius in meters
     var listOfPlaces = [Place]()
     
+    // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
-    
+     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     // MARK: - Actions
     @IBAction func refreshTapped(_ sender: UIBarButtonItem) {
@@ -41,6 +59,21 @@ class PlacesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    
+    @IBAction func segmentChanged(_ sender: UISegmentedControl) {
+        
+        switch PlacesSortingSegments(rawValue: sender.selectedSegmentIndex) {
+        case .rating: listOfPlaces.sort(by: Place.rating)
+        case .name: listOfPlaces.sort(by: Place.name)
+        case .openNow: listOfPlaces.sort(by: Place.openNow)
+        case .distance: listOfPlaces.sort(by: Place.distance)
+        default: listOfPlaces.sort(by: Place.rating)
+        }
+        tableView.reloadData()
+    }
+    
+   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -59,22 +92,6 @@ class PlacesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             locationManager.startUpdatingLocation()
         }
     }
-    
-    // MARK - private methods
-    
-//    private func getNearByPlaces() {
-//        let placesRequest = PlacesAPIRequest()
-//        placesRequest.getNearByPlacesByRadius(location: myLocation, radius: 5000, type: .restaurant, completion: { [weak self] result in
-//            switch result {
-//            case .failure(let error):
-//                print(error)
-//            case .success(let places):
-//                self?.listOfPlaces = places
-//            }
-//        })
-//    }
-    
-    
     
     // MARK: - TableView Delegates
     

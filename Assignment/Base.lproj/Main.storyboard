@@ -203,11 +203,14 @@
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="AMk-lk-ND6">
                                 <rect key="frame" x="20" y="108" width="374" height="32"/>
                                 <segments>
-                                    <segment title="Rank"/>
+                                    <segment title="Rating"/>
                                     <segment title="Name"/>
                                     <segment title="Open Now"/>
                                     <segment title="Distance"/>
                                 </segments>
+                                <connections>
+                                    <action selector="segmentChanged:" destination="TJ3-cs-UPT" eventType="valueChanged" id="wiI-Sl-I55"/>
+                                </connections>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="quI-dF-3xd">
                                 <rect key="frame" x="20" y="162" width="374" height="700"/>
@@ -311,6 +314,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="segmentedControl" destination="AMk-lk-ND6" id="4IH-ni-3Ut"/>
                         <outlet property="tableView" destination="quI-dF-3xd" id="xsB-K0-78k"/>
                     </connections>
                 </viewController>
