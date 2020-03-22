@@ -49,7 +49,7 @@ struct PlacePhotoResource: APIResource {
 class PlacesAPIClient : APIClient {
     static let shared = PlacesAPIClient()
     
-    let API_KEY = "AIzaSyB3CxWBdsIzyKq2-KnDGm_f9Yedt_AewNc"
+    let API_KEY = "<INSERT_YOUR_PLACES_API_KEY_HERE>"
     let DEFAULT_RADIUS = 500 //default radius of 500m
     let MAX_IMAGE_WIDTH = 256
     
