@@ -50,7 +50,15 @@ struct Place: Codable {
     }
 }
 
-extension Place {
+extension Place : Equatable, Hashable {
+    static func == (lhs: Place, rhs: Place) -> Bool {
+        lhs.placeID == rhs.placeID
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(placeID)
+    }
+    
     static func rating (lhs: Place, rhs: Place) -> Bool {
         lhs.rating ?? 0 > rhs.rating ?? 0
     }

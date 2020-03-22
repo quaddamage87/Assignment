@@ -29,9 +29,16 @@ fileprivate enum PlacesSortingSegments : Int {
 class PlacesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
 
     let locationManager = CLLocationManager()
-    var userLocation = Location(lat: 52.378001, lng: 4.899570)
+    var userLocation = Location(lat: 52.378001, lng: 4.899570) // default location (Amsterdam CS)
     var searchRadius = 1000 // default search radius in meters
-    var listOfPlaces = [Place]()
+    var listOfPlaces = [Place]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.navigationItem.title = "Nearby places (\(self.listOfPlaces.count))"
+            }
+        }
+    }
+
     
     // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
@@ -40,22 +47,46 @@ class PlacesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: - Actions
     @IBAction func refreshTapped(_ sender: UIBarButtonItem) {
         showSpinner(on: tableView)
-        PlacesAPIClient.shared.getNearByPlacesByRadius(location: userLocation, radius: searchRadius, type: .restaurant) { result in
-            switch result {
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.removeSpinner(on: self.tableView)
-                    self.showAlert(with: "API error: \(error.localizedDescription)")
-                }
-                
-                
-            case .success(let places):
-                DispatchQueue.main.async {
-                    self.removeSpinner(on: self.tableView)
-                    self.listOfPlaces = places
-                    self.tableView.reloadData()
+        
+        /* Because the Places API does not support multi-type search,
+        * we need to make 3 separate api calls in order to show cafes, bars and restaurants.
+        */
+        let types = [PlaceTypes.bar, PlaceTypes.cafe, PlaceTypes.restaurant]
+        listOfPlaces = [Place]() // start with an empty list of places
+        
+        // to wait for the completion of all three calls we use Dispatch Groups
+        let dispatchGroup = DispatchGroup()
+
+        for type in types {
+            dispatchGroup.enter()
+
+            PlacesAPIClient.shared.getNearByPlacesByRadius(location: userLocation, radius: searchRadius, type: type) { result in
+                switch result {
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self.showAlert(with: "API error: \(error.localizedDescription)")
+                        dispatchGroup.leave()
+                    }
+                    
+                case .success(let places):
+                    DispatchQueue.main.async {
+                        self.listOfPlaces.append(contentsOf: places)
+                        dispatchGroup.leave()
+                    }
                 }
             }
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            self.removeSpinner(on: self.tableView)
+            // some places are both listed as a bar, cafe AND restaurant
+            // so we need to remove any duplicates
+            self.listOfPlaces = Array(Set(self.listOfPlaces))
+            
+            // sort the places by rating
+            self.listOfPlaces.sort(by: Place.rating)
+            // showtime!
+            self.tableView.reloadData()
         }
     }
     

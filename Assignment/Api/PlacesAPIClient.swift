@@ -80,7 +80,6 @@ class PlacesAPIClient : APIClient {
                 completion(.success(result.results))
             }
         }
-
     }
     
     func getPlaceDetails(placeID: String,

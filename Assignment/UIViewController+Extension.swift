@@ -15,7 +15,7 @@ extension UIViewController {
     
     func showSpinner(on targetView : UIView) {
         
-        overlayView = UIView(frame: view.bounds)
+        overlayView = UIView(frame: targetView.bounds)
         overlayView?.backgroundColor = .white
         let activityIndicator = UIActivityIndicatorView(style: .gray)
         activityIndicator.center = overlayView!.center
