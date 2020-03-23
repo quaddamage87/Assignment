@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: - ResultSet
 struct PlaceDetailsApiResponse: Codable {
-    var htmlAttributions: [String]
+    var htmlAttributions: [String]?
     var result: PlaceDetails
     var status: String
 
@@ -35,7 +35,7 @@ struct PlaceDetails: Codable {
     var plusCode: PlusCode?
     var rating: Double?
     var reference: String?
-    var reviews: [Review]
+    var reviews: [Review]?
     var scope: String?
     var types: [String]?
     var url: String?

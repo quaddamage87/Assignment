@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1039C6332426CCE500DB71D0 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1039C6322426CCE500DB71D0 /* APIClient.swift */; };
 		1039C6362427036600DB71D0 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1039C6352427036600DB71D0 /* Reachability.swift */; };
+		1039C63A2428824A00DB71D0 /* PlaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1039C6392428824A00DB71D0 /* PlaceTests.swift */; };
 		105B28912422690E007FDFA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105B28902422690E007FDFA5 /* AppDelegate.swift */; };
 		105B28982422690E007FDFA5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 105B28962422690E007FDFA5 /* Main.storyboard */; };
 		105B289A2422690E007FDFA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 105B28992422690E007FDFA5 /* Assets.xcassets */; };
@@ -47,6 +48,7 @@
 /* Begin PBXFileReference section */
 		1039C6322426CCE500DB71D0 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		1039C6352427036600DB71D0 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		1039C6392428824A00DB71D0 /* PlaceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceTests.swift; sourceTree = "<group>"; };
 		105B288D2422690E007FDFA5 /* Assignment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Assignment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		105B28902422690E007FDFA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		105B28972422690E007FDFA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -104,10 +106,28 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
+		1039C63F242882C400DB71D0 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				105B28CB24239925007FDFA5 /* PlaceDetailsViewController.swift */,
+				105B28DB24250A29007FDFA5 /* PlacesViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1039C6402428830E00DB71D0 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				105B28DD24269EE8007FDFA5 /* UIViewController+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		105B28842422690E007FDFA5 = {
 			isa = PBXGroup;
 			children = (
 				105B288F2422690E007FDFA5 /* Assignment */,
+				1039C6402428830E00DB71D0 /* Extensions */,
 				105B28A62422690F007FDFA5 /* AssignmentTests */,
 				105B28B12422690F007FDFA5 /* AssignmentUITests */,
 				105B288E2422690E007FDFA5 /* Products */,
@@ -131,14 +151,12 @@
 				105B28CF2423B0ED007FDFA5 /* Api */,
 				105B28C624238F55007FDFA5 /* Model */,
 				105B28C824238F77007FDFA5 /* View */,
+				1039C63F242882C400DB71D0 /* Controller */,
 				105B28902422690E007FDFA5 /* AppDelegate.swift */,
-				105B28CB24239925007FDFA5 /* PlaceDetailsViewController.swift */,
-				105B28DB24250A29007FDFA5 /* PlacesViewController.swift */,
 				105B28962422690E007FDFA5 /* Main.storyboard */,
 				105B28992422690E007FDFA5 /* Assets.xcassets */,
 				105B289B2422690E007FDFA5 /* LaunchScreen.storyboard */,
 				105B289E2422690E007FDFA5 /* Info.plist */,
-				105B28DD24269EE8007FDFA5 /* UIViewController+Extension.swift */,
 			);
 			path = Assignment;
 			sourceTree = "<group>";
@@ -148,6 +166,7 @@
 			children = (
 				105B28A72422690F007FDFA5 /* AssignmentTests.swift */,
 				105B28A92422690F007FDFA5 /* Info.plist */,
+				1039C6392428824A00DB71D0 /* PlaceTests.swift */,
 			);
 			path = AssignmentTests;
 			sourceTree = "<group>";
@@ -346,6 +365,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				105B28A82422690F007FDFA5 /* AssignmentTests.swift in Sources */,
+				1039C63A2428824A00DB71D0 /* PlaceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

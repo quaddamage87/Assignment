@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-fileprivate enum PlacesSortingSegments : Int {
+enum PlacesSortingSegments : Int {
     case rating = 0
     case name = 1
     case openNow = 2
@@ -29,6 +29,7 @@ fileprivate enum PlacesSortingSegments : Int {
 class PlacesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
 
     let locationManager = CLLocationManager()
+    let METERS_IN_KM = 1000.0
     var userLocation = Location(lat: 52.378001, lng: 4.899570) // default location (Amsterdam CS)
     var searchRadius = 1000 // default search radius in meters
     var listOfPlaces = [Place]() {
@@ -42,54 +43,16 @@ class PlacesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
-     @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     // MARK: - Actions
     @IBAction func refreshTapped(_ sender: UIBarButtonItem) {
         showSpinner(on: tableView)
         
-        /* Because the Places API does not support multi-type search,
-        * we need to make 3 separate api calls in order to show cafes, bars and restaurants.
-        */
-        let types = [PlaceTypes.bar, PlaceTypes.cafe, PlaceTypes.restaurant]
-        listOfPlaces = [Place]() // start with an empty list of places
-        
-        // to wait for the completion of all three calls we use Dispatch Groups
-        let dispatchGroup = DispatchGroup()
-
-        for type in types {
-            dispatchGroup.enter()
-
-            PlacesAPIClient.shared.getNearByPlacesByRadius(location: userLocation, radius: searchRadius, type: type) { result in
-                switch result {
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        self.showAlert(with: "API error: \(error.localizedDescription)")
-                        dispatchGroup.leave()
-                    }
-                    
-                case .success(let places):
-                    DispatchQueue.main.async {
-                        self.listOfPlaces.append(contentsOf: places)
-                        dispatchGroup.leave()
-                    }
-                }
-            }
-        }
-
-        dispatchGroup.notify(queue: .main) {
-            self.removeSpinner(on: self.tableView)
-            // some places are both listed as a bar, cafe AND restaurant
-            // so we need to remove any duplicates
-            self.listOfPlaces = Array(Set(self.listOfPlaces))
-            
-            // sort the places by rating
-            self.listOfPlaces.sort(by: Place.rating)
-            // showtime!
-            self.tableView.reloadData()
-        }
+        // reset sorting to by rating
+        segmentedControl.selectedSegmentIndex = PlacesSortingSegments.rating.rawValue
+        getNearByPlaces()
     }
-    
     
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
         
@@ -102,14 +65,38 @@ class PlacesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         tableView.reloadData()
     }
-    
-   
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Get current user location ------
+        getUserLocation()
+    }
+    
+    // MARK: - Private methods
+    
+    func getNearByPlaces() {
+        let types = [PlaceTypes.bar, PlaceTypes.cafe, PlaceTypes.restaurant]
         
+        // user our own multi-type search
+        PlacesAPIClient.shared.getNearByPlacesByRadius(location: userLocation, radius: searchRadius, types: types) { result in
+            switch result {
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.removeSpinner()
+                    self.showAlert(with: "API error: \(error.localizedDescription)")
+                }
+                
+            case .success(let places):
+                DispatchQueue.main.async {
+                    self.removeSpinner()
+                    self.listOfPlaces = places
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+    
+    func getUserLocation() {
         // Ask for Authorisation from the User.
         self.locationManager.requestAlwaysAuthorization()
 
@@ -124,19 +111,15 @@ class PlacesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    // MARK: - TableView Delegates
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listOfPlaces.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
-
-        // Configure the cell...
-        let place = listOfPlaces[indexPath.row]
+    func populatePlaceCell(cell: PlaceCell, with place: Place) {
+        // Populate the cell...
+        
+        // name
         cell.placeNameLabel?.text = place.name
+        
+        // rating
         if let rating = place.rating {
+            cell.ratingView.isHidden = false
             cell.ratingLabel?.text = String(rating)
             cell.ratingView.rating = place.rating
             if let userRatingsTotal = place.userRatingsTotal {
@@ -149,6 +132,7 @@ class PlacesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.reviewCountLabel.isHidden = true
         }
         
+        // open now
         if let openNow = place.openingHours?.openNow {
             if openNow {
                 cell.openClosedLabel?.isHidden = false
@@ -163,11 +147,34 @@ class PlacesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         else {
             cell.openClosedLabel?.isHidden = true
         }
+        
+        // distance
+        if let distance = place.distance {
+            if distance < METERS_IN_KM {
+                cell.distanceLabel?.text = String(format: "%.0f m", distance)
+            } else {
+                cell.distanceLabel?.text = String(format: "%.1f km", distance)
+            }
+        }
+    }
+    
+    // MARK: - TableView Delegates
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return listOfPlaces.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! PlaceCell
+        let place = listOfPlaces[indexPath.row]
+        
+        populatePlaceCell(cell: cell, with: place)
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-         return 72.0
+         return 76.0
     }
     
     // MARK: - CLLocationManager Delegate

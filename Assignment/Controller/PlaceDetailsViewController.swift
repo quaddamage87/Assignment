@@ -49,50 +49,58 @@ class PlaceDetailsViewController: UIViewController, UITableViewDelegate, UITable
                 ratingView.isHidden = true
                 reviewCountLabel.isHidden = true
             }
+            
+            // fetch place details
+            getPlaceDetails(for: place)
         }
-        
-        // Feth the place details
-        let placesRequest = PlacesAPIClient()
-        
-        if let place = place {
-            placesRequest.getPlaceDetails(placeID: place.placeID, completion: { [weak self] result in
-                    switch result {
-                        case .failure(let error):
-                            DispatchQueue.main.async {
-                                self?.showAlert(with: "API error: \(error.localizedDescription)")
-                            }
-                        case .success(let details):
-                            self?.details = details
-                            self?.listOfReviews = details.reviews
-                            self?.fillDetails()
-                    }
-            })
-        }
-        
 
-        
+    }
+    
+    func getPlaceDetails(for place: Place) {
+        PlacesAPIClient.shared.getPlaceDetails(placeID: place.placeID, completion: { [weak self] result in
+                switch result {
+                    case .failure(let error):
+                        DispatchQueue.main.async {
+                            self?.showAlert(with: "API error: \(error.localizedDescription)")
+                        }
+                    case .success(let details):
+                        self?.details = details
+                        if let reviews = details.reviews {
+                            self?.listOfReviews = reviews
+                        }
+                        if let photos = details.photos {
+                            self?.populatePhotos(with: photos)
+                        }
+                        // reload our review table view
+                        DispatchQueue.main.async {
+                            self?.reviewsTableView.reloadData()
+                        }
+                }
+        })
     }
 
-    func fillDetails() -> Void {
+    func populatePhotos(with photos: [PhotoDetail]) -> Void {
         // load photos
-        if let photos = details?.photos {
-            if photos.count > 0 {
-                let placesRequest = PlacesAPIClient()
-                var imageUrl = placesRequest.getPlacePhotoURL(photoReference: photos[0].photoReference)
-                leftImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder.png"))
-                if photos.count > 1 {
-                    imageUrl = placesRequest.getPlacePhotoURL(photoReference: photos[1].photoReference)
-                    rightImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named:
-                    "placeholder.png"))
-                }
-                
+        if photos.count > 0 {
+            let placesRequest = PlacesAPIClient()
+            var imageUrl = placesRequest.getPlacePhotoURL(photoReference: photos[0].photoReference)
+            leftImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder.png"))
+            if photos.count > 1 {
+                imageUrl = placesRequest.getPlacePhotoURL(photoReference: photos[1].photoReference)
+                rightImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named:
+                "placeholder.png"))
             }
+            
         }
-        // reload our review table view
-        DispatchQueue.main.async {
-            self.reviewsTableView.reloadData()
-        }
+    }
     
+    func populateReviewCell(cell: ReviewCell, with review: Review) {
+        guard let imageUrl = URL(string: review.profilePhotoURL) else {fatalError()}
+        cell.profileImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder.png"))
+        cell.authorLabel.text = review.authorName
+        cell.ratingView.rating = Double(review.rating)
+        cell.relativeTimeLabel.text = review.relativeTimeDescription
+        cell.reviewTextLabel.text = review.text
     }
     
     // MARK: - TableView Delegates
@@ -112,16 +120,9 @@ class PlaceDetailsViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reviewCell", for: indexPath) as! ReviewCell
-        
-        // Configure the cell...
         let review = listOfReviews[indexPath.row]
-        guard let imageUrl = URL(string: review.profilePhotoURL) else {fatalError()}
-        cell.profileImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder.png"))
-        cell.authorLabel.text = review.authorName
-//        cell.ratingView.rating = Double(review.rating)
-        cell.relativeTimeLabel.text = review.relativeTimeDescription
-        cell.reviewTextLabel.text = review.text
         
+        populateReviewCell(cell: cell, with: review)
         return cell
     }
 }

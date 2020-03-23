@@ -16,7 +16,7 @@ class PlaceCell: UITableViewCell {
     @IBOutlet weak var ratingView: RatingView!
     @IBOutlet weak var openClosedLabel: UILabel!
     @IBOutlet weak var reviewCountLabel: UILabel!
-    
+    @IBOutlet weak var distanceLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -15,15 +15,16 @@ extension UIViewController {
     
     func showSpinner(on targetView : UIView) {
         
-        overlayView = UIView(frame: targetView.bounds)
+        overlayView = UIView(frame: targetView.frame)
         overlayView?.backgroundColor = .white
         let activityIndicator = UIActivityIndicatorView(style: .gray)
         activityIndicator.center = overlayView!.center
         activityIndicator.startAnimating()
-        targetView.addSubview(overlayView!)
+        overlayView?.addSubview(activityIndicator)
+        view.addSubview(overlayView!)
     }
     
-    func removeSpinner(on targetView : UIView) {
+    func removeSpinner() {
         overlayView?.removeFromSuperview()
         overlayView = nil
     }

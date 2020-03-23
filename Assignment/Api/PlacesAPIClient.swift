@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 enum PlaceTypes: String {
     case cafe
@@ -80,6 +81,65 @@ class PlacesAPIClient : APIClient {
                 completion(.success(result.results))
             }
         }
+    }
+    
+    func getNearByPlacesByRadius(location: Location,
+                                 radius: Int,
+                                 types: [PlaceTypes],
+                                 completion: @escaping(Result<[Place], APIError>) -> Void) {
+        // to wait for the completion of all three calls we use Dispatch Groups
+        let dispatchGroup = DispatchGroup()
+        var listOfPlaces = [Place]()
+
+        /* Because the Places API does not support multi-type search,
+        * we need to make 3 separate api calls in order to show cafes, bars and restaurants.
+        */
+        for type in types {
+            dispatchGroup.enter()
+
+            getNearByPlacesByRadius(location: location, radius: radius, type: type) { result in
+                switch result {
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                        dispatchGroup.leave()
+                    }
+                    
+                case .success(let places):
+                    DispatchQueue.main.async {
+                        listOfPlaces.append(contentsOf: places)
+                        dispatchGroup.leave()
+                    }
+                }
+            }
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            // places are listed by multiple types
+            // so we need to remove any duplicates
+            listOfPlaces = Array(Set(listOfPlaces))
+            
+            // calculate and update the distances of each place from user location
+            listOfPlaces = self.populateDistances(of: listOfPlaces, basedOn: location)
+            
+            // sort the places by rating
+            listOfPlaces.sort(by: Place.rating)
+            // showtime!
+            completion(.success(listOfPlaces))
+        }
+        
+    }
+    
+    func populateDistances(of places: [Place], basedOn userLocation: Location) -> [Place] {
+        // calculate and update the distances of each place from user location
+        var updatedPlaces = places
+        let userCoordinate = CLLocation(latitude: userLocation.lat, longitude: userLocation.lng)
+        for i in 0..<updatedPlaces.count {
+            let placeCoordinate = CLLocation(latitude:  places[i].geometry.location.lat, longitude:  places[i].geometry.location.lng)
+            let distanceInMeters = placeCoordinate.distance(from: userCoordinate)
+            updatedPlaces[i].distance = distanceInMeters
+        }
+        return updatedPlaces
     }
     
     func getPlaceDetails(placeID: String,

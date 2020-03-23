@@ -9,8 +9,8 @@
 import Foundation
 
 struct PlacesApiResponse: Codable {
-    var htmlAttributions: [String]
-    var nextPageToken: String
+    var htmlAttributions: [String]?
+    var nextPageToken: String?
     var results: [Place]
     var status: String
 
@@ -35,7 +35,7 @@ struct Place: Codable {
     var types: [String]?
     var userRatingsTotal: Int?
     var vicinity: String?
-    var distance: Int?
+    var distance: Double?
 
     enum CodingKeys: String, CodingKey {
         case geometry, icon, id, name
@@ -73,13 +73,17 @@ extension Place : Equatable, Hashable {
             if let openingHoursB = rhs.openingHours {
                 result = (openingHoursA.openNow ? 1 : 0) > (openingHoursB.openNow ? 1 : 0)
             } else {
-                result = true // open/closed take precedence over unknown
+                if !openingHoursA.openNow {
+                    result = false // unknown takes precedence over closed
+                } else {
+                    result = true // open/closed take precedence over unknown
+                }
             }
         } else if let openingHoursB = rhs.openingHours {
             if !openingHoursB.openNow {
                 result = true // put A(unknown opening hours) in front of B
             } else {
-                result = false
+                result = false // leave order as is
             }
         }
         return result
@@ -88,13 +92,6 @@ extension Place : Equatable, Hashable {
     static func distance (lhs: Place, rhs: Place) -> Bool {
         lhs.distance ?? 0 < rhs.distance ?? 0
     }
-    
-//    func sortByRating(a: Place, b: Place) -> Bool {
-//        a.rating ?? 0 < b.rating ?? 0
-//    }
-//    func sortByName(a: Place, b: Place) -> Bool {
-//        a.rating ?? 0 < b.rating ?? 0
-//    }
 }
 
 // MARK: - Geometry
