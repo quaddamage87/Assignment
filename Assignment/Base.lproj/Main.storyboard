@@ -305,7 +305,6 @@
                         <viewLayoutGuide key="safeArea" id="TDk-lJ-d3S"/>
                     </view>
                     <navigationItem key="navigationItem" title="Nearby places" id="hu7-fN-V0N">
-                        <barButtonItem key="leftBarButtonItem" title="Filter" id="G2u-ko-JCP"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="RhV-gB-8S4">
                             <connections>
                                 <action selector="refreshTapped:" destination="TJ3-cs-UPT" id="K6k-8U-4TL"/>
